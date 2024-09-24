@@ -18,6 +18,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+}
+
+body {
+  @apply bg-gray-900 text-white;
 }
 
 @layer utilities {

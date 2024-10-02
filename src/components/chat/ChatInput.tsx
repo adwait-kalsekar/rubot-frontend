@@ -42,7 +42,7 @@ export default function ChatInput() {
         />
         <button
           onClick={handleSend}
-          className="absolute bg-gray-900 right-4 rounded-full p-2 text-gray-500"
+          className="absolute bg-gray-900 right-2 rounded-full p-2 text-gray-500"
         >
           <ArrowUpwardIcon />
         </button>

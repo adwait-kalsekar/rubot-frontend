@@ -1,9 +1,10 @@
 'use client';
 
+import { type SignupUser } from '@/types/auth';
 import { useState } from 'react';
 
 export default function SignupForm() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SignupUser>({
     email: '',
     username: '',
     firstName: '',
@@ -12,17 +13,18 @@ export default function SignupForm() {
     confirmPassword: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  }
 
-  const handleSubmit = () => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     // Handle sign up
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded">
-      <h2 className="text-xl mb-4">Sign Up</h2>
+      <h2 className="text-xl mb-4">Create your Account</h2>
       {/* Email Field */}
       <div className="mb-4">
         <label>Email</label>
@@ -86,7 +88,7 @@ export default function SignupForm() {
         />
       </div>
       <button type="submit" className="bg-blue-600 p-2 w-full">
-        Sign Up
+        Signup
       </button>
     </form>
   );

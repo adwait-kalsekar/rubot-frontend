@@ -1,29 +1,44 @@
 'use client';
 
+import axios from 'axios';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { type LoginUser } from '@/types/auth';
+import { useAuth } from '@/provider/authProvider';
+
+const LOGIN_URL = '/api/auth/login';
 
 export default function LoginForm() {
-  const [form, setForm] = useState({ usernameOrEmail: '', password: '' });
+  const [form, setForm] = useState<LoginUser>({ username: '', password: '' });
+  const router = useRouter();
+  const auth = useAuth();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const jsonData = JSON.stringify(form);
-    console.log(jsonData);
     // Handle login
-  };
+
+    const response = await axios.post(LOGIN_URL, form);
+
+    if (response.status === 200) {
+      console.log(response.data);
+      auth?.login();
+      router.replace('/chat');
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded">
-      <h2 className="text-xl mb-4">Login</h2>
+      <h2 className="text-xl mb-4">Login to Existing Account</h2>
       <div className="mb-4">
-        <label>Username or Email</label>
+        <label>Username</label>
         <input
-          name="usernameOrEmail"
-          value={form.usernameOrEmail}
+          name="username"
+          value={form.username}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
         />

@@ -1,16 +1,32 @@
 'use client';
 
+import { useAuth } from '@/provider/authProvider';
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+const LOGOUT_URL = '/api/auth/logout';
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const router = useRouter();
 
-  const isLoggedIn = false;
+  const auth = useAuth();
+
+  const isLoggedIn = auth?.isAuthenticated;
+
+  async function handleLogout() {
+    const response = await axios.post(LOGOUT_URL);
+    console.log(response.data);
+    setDropdownOpen(false);
+    auth?.logout();
+    router.replace('/');
+  }
 
   return (
     <nav className="bg-black-800 p-4">
-      <div className="container mx-20 flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between">
         {/* Logo and App Name */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center flex-row">
@@ -21,7 +37,9 @@ export default function Navbar() {
               alt="Logo"
               className="mr-8"
             /> */}
-            <h1 className="text-4xl font-bold font-serif">RuBot</h1>
+            <h1 className="text-4xl font-bold font-sans">
+              <span className="text-red-600">RU</span>bot
+            </h1>
           </Link>
         </div>
 
@@ -38,7 +56,7 @@ export default function Navbar() {
               </li>
             ) : (
               <li>
-                <Link href="/signup">Sign Up</Link>
+                <Link href="/signup">Signup</Link>
               </li>
             )}
           </ul>
@@ -64,12 +82,20 @@ export default function Navbar() {
                 </svg>
               </button>
               {dropdownOpen && (
-                <ul className="absolute right-20 mt-32 w-48 bg-gray-700 rounded-md shadow-lg">
-                  <li className="block px-4 py-2 hover:bg-gray-600">
-                    <Link href="/profile">Profile</Link>
+                <ul className="absolute right-20 mt-48 w-48 bg-gray-700 rounded-md shadow-lg">
+                  <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
+                    <Link
+                      className="block px-4 py-2 "
+                      href="/profile"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      Profile
+                    </Link>
                   </li>
-                  <li className="block px-4 py-2 hover:bg-gray-600">
-                    <button onClick={() => {}}>Logout</button>
+                  <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
+                    <button className="block px-4 py-2" onClick={handleLogout}>
+                      Logout
+                    </button>
                   </li>
                 </ul>
               )}

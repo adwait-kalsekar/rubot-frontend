@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function SignupPage() {
   return (
-    <div className="flex items-center justify-center mt-24 flex-col">
+    <div className="flex items-center justify-center mt-10 flex-col">
       <SignupForm />
       <p className="mt-2">
         Already have an Account?{' '}

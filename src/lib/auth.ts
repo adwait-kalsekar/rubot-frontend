@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
 
 const TOKEN_AGE = 3600;
-const ACCESS_TOKEN_NAME = 'auth-token';
-const REFRESH_TOKEN_NAME = 'auth-refresh-token';
+const ACCESS_TOKEN_NAME = 'accessToken';
+const REFRESH_TOKEN_NAME = 'refreshToken';
 
 // api requests
 export function getAccessToken() {
@@ -22,7 +22,7 @@ export function setAccessToken(accessToken: string) {
     value: accessToken,
     httpOnly: true,
     sameSite: 'strict',
-    secure: process.env.NODE_ENV !== 'development',
+    secure: process.env.NODE_ENV === 'production',
     maxAge: TOKEN_AGE,
   });
 }
@@ -33,7 +33,7 @@ export function setRefreshToken(refreshToken: string) {
     value: refreshToken,
     httpOnly: true,
     sameSite: 'strict',
-    secure: process.env.NODE_ENV !== 'development',
+    secure: process.env.NODE_ENV !== 'production',
     maxAge: TOKEN_AGE,
   });
 }

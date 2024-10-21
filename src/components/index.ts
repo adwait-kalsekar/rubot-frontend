@@ -5,6 +5,8 @@ import Conversation from './chat/Conversation';
 import ChatHistory from './chat/ChatHistory';
 import LoginForm from './auth/LoginForm';
 import SignupForm from './auth/SignupForm';
+import EditProfileForm from './profile/EditProfileForm';
+import EditPasswordForm from './profile/EditPasswordForm';
 
 export {
   Navbar,
@@ -14,4 +16,6 @@ export {
   ChatHistory,
   LoginForm,
   SignupForm,
+  EditProfileForm,
+  EditPasswordForm,
 };

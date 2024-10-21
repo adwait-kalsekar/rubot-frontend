@@ -7,8 +7,7 @@ export default function SignupForm() {
   const [form, setForm] = useState<SignupUser>({
     email: '',
     username: '',
-    firstName: '',
-    lastName: '',
+    fullName: '',
     password: '',
     confirmPassword: '',
   });
@@ -47,20 +46,10 @@ export default function SignupForm() {
       </div>
       {/* First Name Field */}
       <div className="mb-4">
-        <label>First Name</label>
+        <label>Full Name</label>
         <input
-          name="firstName"
-          value={form.firstName}
-          onChange={handleChange}
-          className="w-full p-2 bg-gray-700 text-white"
-        />
-      </div>
-      {/* Last Name Field */}
-      <div className="mb-4">
-        <label>Last Name</label>
-        <input
-          name="lastName"
-          value={form.lastName}
+          name="fullName"
+          value={form.fullName}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
         />

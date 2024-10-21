@@ -10,7 +10,10 @@ import { useAuth } from '@/provider/authProvider';
 const LOGIN_URL = '/api/auth/login';
 
 export default function LoginForm() {
-  const [form, setForm] = useState<LoginUser>({ username: '', password: '' });
+  const [form, setForm] = useState<LoginUser>({
+    usernameOrEmail: '',
+    password: '',
+  });
   const router = useRouter();
   const auth = useAuth();
 
@@ -35,10 +38,10 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded">
       <h2 className="text-xl mb-4">Login to Existing Account</h2>
       <div className="mb-4">
-        <label>Username</label>
+        <label>Username or Email</label>
         <input
-          name="username"
-          value={form.username}
+          name="usernameOrEmail"
+          value={form.usernameOrEmail}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
         />

@@ -1,19 +1,31 @@
 export type LoginUser = {
-  username: string;
+  usernameOrEmail: string;
   password: string;
 };
 
 export type SignupUser = {
   email: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   password: string;
   confirmPassword: string;
 };
 
-export type LoginResponse = {
+export type User = {
+  fullName: string;
   username: string;
-  refresh: string;
-  access: string;
+  email: string;
+};
+
+type UserFromServer = {
+  _id: string;
+  fullName: string;
+  username: string;
+  email: string;
+};
+
+export type LoginResponse = {
+  user: UserFromServer;
+  accessToken: string;
+  refreshToken: string;
 };

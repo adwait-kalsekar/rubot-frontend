@@ -15,8 +15,8 @@ export default function ChatHistory() {
   const [activeChatId, setActiveChatId] = useState<number | null>(null);
 
   return (
-    <div className="ml-10">
-      <h2 className="text-xl mb-4">Chat History</h2>
+    <div className="ml-2 ">
+      <h2 className="text-xl mb-4 ml-8">Chat History</h2>
       <ul>
         {chats.map((chat) => (
           <li
@@ -27,10 +27,12 @@ export default function ChatHistory() {
           >
             <Link
               href="#"
-              className="block px-2 py-1 text-gray-400 hover:bg-gray-900"
+              className="block px-8 py-1 text-gray-400 hover:bg-gray-900 hover:rounded-md"
               onClick={() => setActiveChatId(chat.id)}
             >
-              {chat.title}
+              {chat.title.length > 20
+                ? `${chat.title.slice(0, 20)}...`
+                : chat.title}
             </Link>
           </li>
         ))}

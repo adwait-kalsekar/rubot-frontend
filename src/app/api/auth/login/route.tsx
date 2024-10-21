@@ -10,7 +10,7 @@ import { LoginResponse } from '@/types/auth';
 import axios from 'axios';
 import { NextResponse, NextRequest } from 'next/server';
 
-const BACKEND_LOGIN_URL = `${process.env.BACKEND_API_URL}/token/pair`;
+const BACKEND_LOGIN_URL = `${process.env.BACKEND_API_URL}/users/login`;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: NextRequest) {
@@ -38,20 +38,20 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const currAccessToken = getAccessToken();
   const currRefreshToken = getRefreshToken();
+
   console.log(`accessToken: ${currAccessToken}`);
   console.log(`refreshToken: ${currRefreshToken}`);
   const requestData = await request.json();
-  const jsonData = JSON.stringify(requestData);
 
-  const response = await axios.post(BACKEND_LOGIN_URL, jsonData);
+  const response = await axios.post(BACKEND_LOGIN_URL, requestData);
 
   if (response.status === 200) {
     console.log('logged in');
-    const data: LoginResponse = response.data;
-    const { access, refresh } = data;
+    const data: LoginResponse = response.data.data;
+    const { accessToken, refreshToken } = data;
 
-    setAccessToken(access);
-    setRefreshToken(refresh);
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
 
     return NextResponse.json(
       {

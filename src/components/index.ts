@@ -7,6 +7,7 @@ import LoginForm from './auth/LoginForm';
 import SignupForm from './auth/SignupForm';
 import EditProfileForm from './profile/EditProfileForm';
 import EditPasswordForm from './profile/EditPasswordForm';
+import NewConversation from './chat/NewConversation';
 
 export {
   Navbar,
@@ -18,4 +19,5 @@ export {
   SignupForm,
   EditProfileForm,
   EditPasswordForm,
+  NewConversation,
 };

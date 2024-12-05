@@ -2,37 +2,74 @@
 
 import { Dispatch, SetStateAction, useState } from 'react';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import { Message } from '@/types/chat';
+import { Message, MessageResponse } from '@/types/chat';
 import axios from 'axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams, useRouter } from 'next/navigation';
 
 interface ChatInputProps {
-  messages: Message[];
   setMessages: Dispatch<SetStateAction<Message[]>>;
+  isLoading: boolean;
+  messagesLoadingError: boolean;
+  messageMutationError: boolean;
+  setMessageError: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ChatInput({ messages, setMessages }: ChatInputProps) {
+export default function ChatInput({
+  setMessages,
+  isLoading,
+  messagesLoadingError,
+  setMessageError,
+}: ChatInputProps) {
+  const params = useParams();
+  const conversationId = params.id as string;
+  const router = useRouter();
+
   const [message, setMessage] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const handleSend = async () => {
+  const queryClient = useQueryClient();
+
+  const messageMutation = useMutation({
+    mutationFn: async ({ prompt }: { prompt: string }) => {
+      const response = await axios.post(
+        `/api/chat/conversations/${conversationId}`,
+
+        {
+          prompt,
+        }
+      );
+      return response;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSuccess: (data: any) => {
+      const messageResponse: MessageResponse = data.data.data;
+      queryClient.invalidateQueries({
+        queryKey: ['conversation', conversationId],
+      });
+      setMessageError(false);
+      router.push(`/chat/${messageResponse.conversationId}`);
+    },
+    onError: () => {
+      setMessageError(true);
+    },
+  });
+
+  const handleSend = () => {
     const prompt = message;
 
     setMessage('');
-    if (prompt.trim() !== '') {
-      setMessages([
-        ...messages,
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ]);
-    }
+    setMessages((prevMessages) => {
+      const newMessages = [
+        ...prevMessages,
+        { id: '', role: 'user', content: prompt } as Message,
+      ];
+      return newMessages;
+    });
 
-    const response = await axios.post('http://localhost:8080/', { prompt });
-
-    const aiResponse: Message = response.data;
-
-    alert(aiResponse.content);
+    messageMutation.mutate({
+      prompt,
+    });
   };
 
   const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -58,7 +95,12 @@ export default function ChatInput({ messages, setMessages }: ChatInputProps) {
                 ? 'h-32 overflow-auto rounded-3xl'
                 : 'h-12 overflow-hidden rounded-full'
             }`}
-            placeholder="Type your message..."
+            placeholder={
+              isLoading || messageMutation.isPending
+                ? 'Generating Response...'
+                : 'Type your message...'
+            }
+            disabled={isLoading || messageMutation.isPending ? true : false}
             value={message}
             onChange={handlePromptChange}
             onKeyDown={(e) =>
@@ -71,7 +113,12 @@ export default function ChatInput({ messages, setMessages }: ChatInputProps) {
           />
           <button
             onClick={handleSend}
-            disabled={message.trim() === ''}
+            disabled={
+              message.trim() === '' ||
+              isLoading ||
+              messagesLoadingError ||
+              messageMutation.isPending
+            }
             className={`absolute right-2 rounded-full p-2 ${
               message.trim() === ''
                 ? 'bg-gray-400 text-white'

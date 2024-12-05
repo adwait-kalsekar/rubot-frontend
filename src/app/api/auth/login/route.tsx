@@ -1,16 +1,18 @@
 'use server';
 
+import axios from 'axios';
+import { NextResponse, NextRequest } from 'next/server';
+
 import {
   getAccessToken,
   getRefreshToken,
   setAccessToken,
   setRefreshToken,
 } from '@/lib/auth';
+import { BACKEND_AUTH_URL } from '@/lib/constants';
 import { LoginResponse } from '@/types/auth';
-import axios from 'axios';
-import { NextResponse, NextRequest } from 'next/server';
 
-const BACKEND_LOGIN_URL = `${process.env.BACKEND_API_URL}/users/login`;
+const BACKEND_LOGIN_URL = `${BACKEND_AUTH_URL}/users/login`;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: NextRequest) {
@@ -39,8 +41,6 @@ export async function POST(request: NextRequest) {
   const currAccessToken = getAccessToken();
   const currRefreshToken = getRefreshToken();
 
-  console.log(`accessToken: ${currAccessToken}`);
-  console.log(`refreshToken: ${currRefreshToken}`);
   const requestData = await request.json();
 
   const response = await axios.post(BACKEND_LOGIN_URL, requestData);

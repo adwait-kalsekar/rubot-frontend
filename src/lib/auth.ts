@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-const TOKEN_AGE = 3600;
+const TOKEN_AGE = 86400;
 const ACCESS_TOKEN_NAME = 'accessToken';
 const REFRESH_TOKEN_NAME = 'refreshToken';
 

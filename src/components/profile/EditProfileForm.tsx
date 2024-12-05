@@ -1,9 +1,6 @@
 'use client';
 
-import Image from 'next/image';
-import { Dispatch, SetStateAction, useState } from 'react';
-
-import defaultUserIcon from '../../../public/assets/default-user-icon.png';
+import { Dispatch, FormEvent, SetStateAction } from 'react';
 
 interface EditProfileForm {
   setEditing: Dispatch<SetStateAction<'password' | 'profile' | 'none'>>;
@@ -14,6 +11,8 @@ interface EditProfileForm {
     avatar: string;
     password: string;
     confirmPassword: string;
+    isStudent: boolean;
+    canvasApiKey: string;
   };
   setUser: Dispatch<
     SetStateAction<{
@@ -23,6 +22,8 @@ interface EditProfileForm {
       avatar: string;
       password: string;
       confirmPassword: string;
+      isStudent: boolean;
+      canvasApiKey: string;
     }>
   >;
 }
@@ -32,13 +33,16 @@ function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // Handle profile update
     if (user.password && user.password != user.confirmPassword) {
       return alert('Passwords not same');
     }
 
     alert('Profile saved');
+
+    setEditing('none');
   };
 
   return (
@@ -53,6 +57,7 @@ function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
           value={user.fullName}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
+          required
         />
       </div>
 
@@ -63,6 +68,7 @@ function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
           value={user.username}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
+          required
         />
       </div>
       <div className="mb-4">
@@ -73,8 +79,25 @@ function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
           type="email"
+          required
         />
       </div>
+
+      {user.isStudent && (
+        <>
+          <div className="mb-4">
+            <label>Canvas API Key</label>
+            <input
+              name="email"
+              value={user.canvasApiKey}
+              onChange={handleChange}
+              className="w-full p-2 bg-gray-700 text-white"
+              type="text"
+              required
+            />
+          </div>
+        </>
+      )}
       {/* Add other fields similarly */}
       <div className="mt-8">
         <button

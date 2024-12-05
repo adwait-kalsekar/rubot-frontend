@@ -1,0 +1,4 @@
+const BACKEND_AUTH_URL = process.env.BACKEND_AUTH_URL;
+const BACKEND_CHAT_URL = process.env.BACKEND_CHAT_URL;
+
+export { BACKEND_AUTH_URL, BACKEND_CHAT_URL };

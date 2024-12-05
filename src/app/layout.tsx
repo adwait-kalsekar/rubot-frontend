@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark h-full">
-      <body className="bg-gray-900 text-white flex flex-col min-h-screen">
+      <body className="bg-gray-900 text-white flex flex-col h-full">
         <AuthProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>

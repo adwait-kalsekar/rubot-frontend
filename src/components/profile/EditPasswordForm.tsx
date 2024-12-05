@@ -1,48 +1,40 @@
 'use client';
 
-import Image from 'next/image';
-import { Dispatch, SetStateAction, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from 'react';
 
 import defaultUserIcon from '../../../public/assets/default-user-icon.png';
 
 interface EditPasswordFormProps {
   setEditing: Dispatch<SetStateAction<'password' | 'profile' | 'none'>>;
-  user: {
-    email: string;
-    username: string;
-    fullName: string;
-    avatar: string;
-    password: string;
-    confirmPassword: string;
-  };
-  setUser: Dispatch<
-    SetStateAction<{
-      email: string;
-      username: string;
-      fullName: string;
-      avatar: string;
-      password: string;
-      confirmPassword: string;
-    }>
-  >;
 }
 
-function EditPasswordForm({
-  setEditing,
-  user,
-  setUser,
-}: EditPasswordFormProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+function EditPasswordForm({ setEditing }: EditPasswordFormProps) {
+  const [passwords, setPasswords] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPasswords({ ...passwords, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // Handle profile update
-    if (user.password && user.password != user.confirmPassword) {
-      return alert('Passwords not same');
+    if (passwords.newPassword != passwords.confirmNewPassword) {
+      return alert('Password and Confirm Password are not same');
     }
 
-    alert('Profile saved');
+    alert('Password Updated');
+
+    setEditing('none');
   };
 
   return (
@@ -51,23 +43,36 @@ function EditPasswordForm({
       {/* Form fields */}
 
       <div className="mb-4">
-        <label>Password</label>
+        <label>Current Password</label>
         <input
-          name="password"
-          value={user.password}
+          name="currentPassword"
+          value={passwords.currentPassword}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
           type="password"
+          required
         />
       </div>
       <div className="mb-4">
-        <label>Confirm Password</label>
+        <label>New Password</label>
         <input
-          name="confirmPassword"
-          value={user.confirmPassword}
+          name="newPassword"
+          value={passwords.newPassword}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
           type="password"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label>Confirm New Password</label>
+        <input
+          name="confirmNewPassword"
+          value={passwords.confirmNewPassword}
+          onChange={handleChange}
+          className="w-full p-2 bg-gray-700 text-white"
+          type="password"
+          required
         />
       </div>
       {/* Add other fields similarly */}

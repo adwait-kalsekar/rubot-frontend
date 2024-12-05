@@ -15,6 +15,8 @@ export default function ProfilePage() {
     avatar: '',
     password: '',
     confirmPassword: '',
+    isStudent: true,
+    canvasApiKey: 'test_key_for_canvas',
   });
 
   const [editing, setEditing] = useState<'profile' | 'password' | 'none'>(
@@ -42,11 +44,7 @@ export default function ProfilePage() {
 
           {editing === 'password' ? (
             <>
-              <EditPasswordForm
-                setEditing={setEditing}
-                user={user}
-                setUser={setUser}
-              />
+              <EditPasswordForm setEditing={setEditing} />
             </>
           ) : editing === 'profile' ? (
             <>
@@ -75,6 +73,15 @@ export default function ProfilePage() {
                   <br />
                   <span className="text-xl">{user.email}</span>
                 </div>
+                {user.isStudent && (
+                  <div className="mb-4">
+                    <span className="text-base text-gray-500">
+                      Canvas API Key
+                    </span>
+                    <br />
+                    <span className="text-xl">{user.canvasApiKey}</span>
+                  </div>
+                )}
               </div>
 
               <div className="">

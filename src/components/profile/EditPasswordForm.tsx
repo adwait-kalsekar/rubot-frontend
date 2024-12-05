@@ -8,8 +8,6 @@ import {
   useState,
 } from 'react';
 
-import defaultUserIcon from '../../../public/assets/default-user-icon.png';
-
 interface EditPasswordFormProps {
   setEditing: Dispatch<SetStateAction<'password' | 'profile' | 'none'>>;
 }

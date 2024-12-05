@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (storedAuthStatus) {
       setIsAuthenticated(parseInt(storedAuthStatus) === 1);
     }
-  });
+  }, []);
 
   const login = () => {
     setIsAuthenticated(true);

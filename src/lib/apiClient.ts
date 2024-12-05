@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { getAccessToken, getRefreshToken } from './auth';
+import { getAccessToken } from './auth';
 
 const createApiClient = () => {
   const accessToken = getAccessToken();
-  const refreshToken = getRefreshToken();
+  // const refreshToken = getRefreshToken();
 
   const apiClient = axios.create({
     headers: {

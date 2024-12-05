@@ -5,7 +5,7 @@ import { NextResponse, NextRequest } from 'next/server';
 
 import {
   getAccessToken,
-  getRefreshToken,
+  // getRefreshToken,
   setAccessToken,
   setRefreshToken,
 } from '@/lib/auth';
@@ -38,8 +38,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const currAccessToken = getAccessToken();
-  const currRefreshToken = getRefreshToken();
+  // const currAccessToken = getAccessToken();
+  // const currRefreshToken = getRefreshToken();
 
   const requestData = await request.json();
 

@@ -22,9 +22,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_AUTH_KEY);
-    if (storedAuthStatus) {
-      setIsAuthenticated(parseInt(storedAuthStatus) === 1);
+    if (typeof window !== 'undefined') {
+      const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_AUTH_KEY);
+      if (storedAuthStatus) {
+        setIsAuthenticated(parseInt(storedAuthStatus) === 1);
+      }
     }
   }, []);
 
@@ -48,5 +50,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }

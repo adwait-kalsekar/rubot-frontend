@@ -16,7 +16,7 @@ type AuthContextType = {
 
 const LOCAL_STORAGE_AUTH_KEY = 'is-authenticated';
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | ''>('');
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

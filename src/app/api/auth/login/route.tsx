@@ -45,6 +45,8 @@ export async function POST(request: NextRequest) {
 
   const response = await axios.post(BACKEND_LOGIN_URL, requestData);
 
+  console.log(response.data);
+
   if (response.status === 200) {
     console.log('logged in');
     const data: LoginResponse = response.data.data;

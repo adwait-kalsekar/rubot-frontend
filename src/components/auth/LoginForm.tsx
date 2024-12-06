@@ -23,12 +23,10 @@ export default function LoginForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Handle login
 
     const response = await axios.post(LOGIN_URL, form);
 
     if (response.status === 200) {
-      console.log(response.data);
       auth?.login();
       router.replace('/chat');
     }

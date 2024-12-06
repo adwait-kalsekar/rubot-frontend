@@ -1,7 +1,13 @@
 'use client';
 
-import { type SignupUser } from '@/types/auth';
+import axios from 'axios';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { type SignupUser } from '@/types/auth';
+import { useAuth } from '@/provider/authProvider';
+
+const SIGNUP_URL = '/api/auth/signup';
 
 export default function SignupForm() {
   const [form, setForm] = useState<SignupUser>({
@@ -12,13 +18,22 @@ export default function SignupForm() {
     confirmPassword: '',
   });
 
+  const router = useRouter();
+  const auth = useAuth();
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Handle sign up
+
+    const response = await axios.post(SIGNUP_URL, form);
+
+    if (response.status === 201) {
+      auth?.login();
+      router.replace('/login');
+    }
   }
 
   return (

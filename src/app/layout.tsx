@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/react';
 
 import './globals.css';
 import { Navbar, Footer } from '@/components';
@@ -22,6 +23,7 @@ export default function RootLayout({
           <main className="flex-grow">{children}</main>
           <Footer />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

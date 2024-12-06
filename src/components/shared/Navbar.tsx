@@ -50,6 +50,9 @@ export default function Navbar() {
             <li>
               <Link href="/">Home</Link>
             </li>
+            <li>
+              <Link href="/about">About</Link>
+            </li>
             {isLoggedIn ? (
               <li>
                 <Link href="/chat">Chat</Link>

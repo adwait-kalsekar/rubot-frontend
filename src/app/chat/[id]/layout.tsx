@@ -1,9 +1,11 @@
 'use client';
 
 import { ChatHistory } from '@/components';
+import { useAuth } from '@/provider/authProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
 
 const queryClient = new QueryClient();
 
@@ -14,6 +16,16 @@ function ConversationLayout({
 }>) {
   const params = useParams();
   const conversationId = params.id as string;
+
+  const auth = useAuth();
+
+  const isLoggedIn = auth?.isAuthenticated;
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      redirect('/');
+    }
+  }, [isLoggedIn]);
 
   const [activeConversationId, setActiveConversationId] = useState<
     string | 'new'

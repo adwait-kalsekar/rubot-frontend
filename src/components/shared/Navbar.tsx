@@ -1,7 +1,6 @@
 'use client';
 
 import CloseIcon from '@mui/icons-material/Close';
-
 import { useAuth } from '@/provider/authProvider';
 import axios from 'axios';
 import Link from 'next/link';
@@ -10,7 +9,7 @@ import { useState } from 'react';
 
 const LOGOUT_URL = '/api/auth/logout';
 
-function Navbar() {
+export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
@@ -28,7 +27,7 @@ function Navbar() {
 
   return (
     <nav className="bg-black-800 p-4 text-white">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between relative">
         {/* Logo and App Name */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center flex-row">
@@ -45,19 +44,8 @@ function Navbar() {
             className="text-white focus:outline-none"
           >
             {mobileMenuOpen ? (
-              // Close Icon (Cross)
-              // <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
-              //   <path
-              //     fillRule="evenodd"
-              //     clipRule="evenodd"
-              //     d="M6 6L18 18M6 18L18 6"
-              //   />
-              // </svg>
-              <span className="h-6 w-6 fill-current">
-                <CloseIcon />
-              </span>
+              <CloseIcon fontSize="large" />
             ) : (
-              // Hamburger Menu Icon
               <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
                 <path
                   fillRule="evenodd"
@@ -112,8 +100,8 @@ function Navbar() {
                 <ul className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-50">
                   <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
                     <Link
-                      className="block px-4 py-2"
                       href="/profile"
+                      className="block px-4 py-2"
                       onClick={() => setDropdownOpen(false)}
                     >
                       Profile
@@ -133,8 +121,9 @@ function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-black-800 mt-2 p-4 space-y-4 text-white">
-          <ul className="flex flex-col space-y-4">
+        <div className="md:hidden bg-black-800 mt-2 p-4 text-white">
+          {/* Center-aligned navigation links */}
+          <ul className="flex flex-col items-center space-y-4 text-center mb-4">
             <li>
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                 Home
@@ -164,7 +153,7 @@ function Navbar() {
             <div className="border-t border-gray-700 pt-4">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center focus:outline-none w-full text-left"
+                className="flex items-center justify-center focus:outline-none w-full ml-2"
               >
                 <span>Account</span>
                 <svg
@@ -183,8 +172,8 @@ function Navbar() {
                 <ul className="mt-2 w-full bg-gray-700 rounded-md shadow-lg">
                   <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
                     <Link
-                      className="block px-4 py-2"
                       href="/profile"
+                      className="block px-4 py-2"
                       onClick={() => {
                         setDropdownOpen(false);
                         setMobileMenuOpen(false);
@@ -213,5 +202,3 @@ function Navbar() {
     </nav>
   );
 }
-
-export default Navbar;

@@ -9,7 +9,7 @@ import {
 } from 'react';
 
 type AuthContextType = {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null; // null means not initialized yet
   login: () => void;
   logout: () => void;
 };
@@ -19,13 +19,15 @@ const LOCAL_STORAGE_AUTH_KEY = 'is-authenticated';
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_AUTH_KEY);
       if (storedAuthStatus) {
         setIsAuthenticated(parseInt(storedAuthStatus) === 1);
+      } else {
+        setIsAuthenticated(false);
       }
     }
   }, []);
@@ -41,11 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <>
-      <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-        {children}
-      </AuthContext.Provider>
-    </>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

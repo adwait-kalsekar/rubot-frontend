@@ -9,27 +9,30 @@ import { redirect } from 'next/navigation';
 
 const queryClient = new QueryClient();
 
-function ConversationLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+function ConversationLayout({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const conversationId = params.id as string;
 
   const auth = useAuth();
+  const isLoggedIn = auth.isAuthenticated;
 
-  const isLoggedIn = auth?.isAuthenticated;
+  // ** Always call hooks before any conditional returns. **
+  const [activeConversationId, setActiveConversationId] = useState<
+    string | 'new'
+  >(conversationId);
 
+  // Handle redirect logic in useEffect
   useEffect(() => {
-    if (!isLoggedIn) {
+    // Only redirect when we know the user is definitely not logged in
+    if (isLoggedIn === false) {
       redirect('/');
     }
   }, [isLoggedIn]);
 
-  const [activeConversationId, setActiveConversationId] = useState<
-    string | 'new'
-  >(conversationId);
+  // If auth state is still loading (null), show nothing (or a loader)
+  if (isLoggedIn === null) {
+    return null;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

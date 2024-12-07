@@ -24,45 +24,37 @@ export default function ProfilePage() {
   );
 
   return (
-    <div className="mr-56 ml-56 items-center mt-10 justify-center">
-      <div className="bg-gray-800 p-10 pl-20 rounded">
-        {/* <h1 className="text-2xl mb-8">User Profile</h1> */}
-        {/* Form fields */}
-
-        <div className="flex flex-row">
-          <div className="mb-4 flex flex-col">
+    <div className="max-w-4xl mx-auto mt-10 px-4">
+      <div className="bg-gray-800 p-4 md:p-10 md:pl-20 rounded">
+        <div className="flex flex-col md:flex-row items-start md:items-center">
+          {/* Avatar and possibly file input if editing profile */}
+          <div className="mb-8 md:mb-0 md:mr-16 flex flex-col items-center md:items-start">
             <Image
               src={user.avatar ? user.avatar : defaultUserIcon}
               height={150}
               width={150}
               alt="User Avatar"
-              className="mb-8 mr-48"
+              className="mb-4"
             />
-
-            {editing === 'profile' && <input className="" type="file" />}
+            {editing === 'profile' && <input type="file" className="mt-2" />}
           </div>
 
           {editing === 'password' ? (
-            <>
-              <EditPasswordForm setEditing={setEditing} />
-            </>
+            <EditPasswordForm setEditing={setEditing} />
           ) : editing === 'profile' ? (
-            <>
-              <EditProfileForm
-                setEditing={setEditing}
-                user={user}
-                setUser={setUser}
-              />
-            </>
+            <EditProfileForm
+              setEditing={setEditing}
+              user={user}
+              setUser={setUser}
+            />
           ) : (
-            <>
-              <div className="profile">
+            <div className="w-full flex flex-col md:flex-row justify-between items-start mt-4 md:mt-0">
+              <div className="profile mb-8 md:mb-0">
                 <div className="mb-8">
-                  <span className="text-4xl font-semibold">
+                  <span className="text-3xl md:text-4xl font-semibold">
                     {user.fullName}
                   </span>
                 </div>
-
                 <div className="mb-4">
                   <span className="text-base text-gray-500">Username</span>
                   <br />
@@ -84,21 +76,21 @@ export default function ProfilePage() {
                 )}
               </div>
 
-              <div className="">
+              <div className="flex flex-col md:items-end space-y-4 md:space-y-6">
                 <button
-                  className="ml-72 mt-10 mb-4 p-2 rounded-md text-lg bg-blue-600 hover:bg-blue-700"
+                  className="p-2 rounded-md text-lg bg-blue-600 hover:bg-blue-700 w-full md:w-auto"
                   onClick={() => setEditing('profile')}
                 >
                   Edit Profile
                 </button>
                 <button
-                  className="ml-72 mt-4 p-2 rounded-md text-lg bg-blue-600 hover:bg-blue-700"
+                  className="p-2 rounded-md text-lg bg-blue-600 hover:bg-blue-700 w-full md:w-auto"
                   onClick={() => setEditing('password')}
                 >
                   Change Password
                 </button>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

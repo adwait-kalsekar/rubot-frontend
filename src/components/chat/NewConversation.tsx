@@ -46,28 +46,29 @@ function NewConversation() {
             <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-md border border-gray-700">
               <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
               <p className="text-gray-300">
-                "What are the prerequisite courses for the Masters in IT&A
-                program?"
+                &quot;What are the prerequisite courses for the Masters in IT&A
+                program?&quot;
               </p>
             </div>
             <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-md border border-gray-700">
               <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
               <p className="text-gray-300">
-                "Show me a course plan focusing on Data Science electives."
+                &quot;Show me a course plan focusing on Data Science
+                electives.&quot;
               </p>
             </div>
             <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-md border border-gray-700">
               <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
               <p className="text-gray-300">
-                "When is my next assignment due in the Business Analytics
-                course?"
+                &quot;When is my next assignment due in the Business Analytics
+                course?&quot;
               </p>
             </div>
             <div className="flex items-center space-x-2 bg-gray-800 p-4 rounded-md border border-gray-700">
               <span className="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
               <p className="text-gray-300">
-                "Can you help me find relevant courses for AI and Machine
-                Learning?"
+                &quot;Can you help me find relevant courses for AI and Machine
+                Learning?&quot;
               </p>
             </div>
           </div>

@@ -24,7 +24,17 @@ export default function Conversation({
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 bg-gray-950 pr-40 pl-32 ">
+    <div
+      className="
+        flex-1 
+        overflow-y-auto 
+        bg-gray-950 
+        p-4
+        sm:p-6 
+        md:pr-40 
+        md:pl-32
+      "
+    >
       {messages?.map((message) => (
         <SingleMessage key={message.id} msg={message} />
       ))}
@@ -32,7 +42,7 @@ export default function Conversation({
         <div className="mb-4 text-right">
           <span className="text-red-600">
             Could not send message! Please try again
-          </span>{' '}
+          </span>
         </div>
       )}
       <div ref={bottomRef}></div>

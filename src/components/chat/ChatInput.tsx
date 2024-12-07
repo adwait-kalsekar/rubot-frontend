@@ -130,7 +130,7 @@ export default function ChatInput({
         </div>
       </div>
 
-      <div className="bg-gray-950 pt-1 pb-1 flex justify-center">
+      <div className="bg-gray-950 pt-1 pb-1 justify-center hidden sm:flex">
         <span className="text-gray-500 text-sm">
           Ctrl+Enter (Windows) or Cmd+Enter (MacOS) to ask RUbot
         </span>

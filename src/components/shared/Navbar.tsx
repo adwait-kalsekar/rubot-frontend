@@ -1,5 +1,7 @@
 'use client';
 
+import CloseIcon from '@mui/icons-material/Close';
+
 import { useAuth } from '@/provider/authProvider';
 import axios from 'axios';
 import Link from 'next/link';
@@ -8,12 +10,12 @@ import { useState } from 'react';
 
 const LOGOUT_URL = '/api/auth/logout';
 
-export default function Navbar() {
+function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
 
   const auth = useAuth();
-
   const isLoggedIn = auth?.isAuthenticated;
 
   async function handleLogout() {
@@ -25,27 +27,50 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-black-800 p-4">
+    <nav className="bg-black-800 p-4 text-white">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo and App Name */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center flex-row">
-            {/* <Image
-              width={200}
-              height={10}
-              src={logo}
-              alt="Logo"
-              className="mr-8"
-            /> */}
             <h1 className="text-4xl font-bold font-sans">
               <span className="text-red-600">RU</span>bot
             </h1>
           </Link>
         </div>
 
-        {/* Right Side Dropdown Menu */}
-        <div className="flex items-center space-x-6 text-xl">
-          {/* Navigation Links */}
+        {/* Mobile menu button */}
+        <div className="flex items-center md:hidden">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-white focus:outline-none"
+          >
+            {mobileMenuOpen ? (
+              // Close Icon (Cross)
+              // <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+              //   <path
+              //     fillRule="evenodd"
+              //     clipRule="evenodd"
+              //     d="M6 6L18 18M6 18L18 6"
+              //   />
+              // </svg>
+              <span className="h-6 w-6 fill-current">
+                <CloseIcon />
+              </span>
+            ) : (
+              // Hamburger Menu Icon
+              <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"
+                />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6 text-xl">
           <ul className="flex space-x-6">
             <li>
               <Link href="/">Home</Link>
@@ -65,13 +90,12 @@ export default function Navbar() {
           </ul>
 
           {isLoggedIn && (
-            <>
+            <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center focus:outline-none"
               >
                 <span>Account</span>
-                {/* Down Arrow Icon */}
                 <svg
                   className="w-4 h-4 ml-1"
                   fill="currentColor"
@@ -85,10 +109,10 @@ export default function Navbar() {
                 </svg>
               </button>
               {dropdownOpen && (
-                <ul className="absolute right-20 mt-48 w-48 bg-gray-700 rounded-md shadow-lg">
+                <ul className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-50">
                   <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
                     <Link
-                      className="block px-4 py-2 "
+                      className="block px-4 py-2"
                       href="/profile"
                       onClick={() => setDropdownOpen(false)}
                     >
@@ -102,10 +126,92 @@ export default function Navbar() {
                   </li>
                 </ul>
               )}
-            </>
+            </div>
           )}
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-black-800 mt-2 p-4 space-y-4 text-white">
+          <ul className="flex flex-col space-y-4">
+            <li>
+              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" onClick={() => setMobileMenuOpen(false)}>
+                About
+              </Link>
+            </li>
+            {isLoggedIn ? (
+              <li>
+                <Link href="/chat" onClick={() => setMobileMenuOpen(false)}>
+                  Chat
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
+                  Signup
+                </Link>
+              </li>
+            )}
+          </ul>
+
+          {isLoggedIn && (
+            <div className="border-t border-gray-700 pt-4">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center focus:outline-none w-full text-left"
+              >
+                <span>Account</span>
+                <svg
+                  className="w-4 h-4 ml-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.585l3.71-4.355a.75.75 0 111.14.976l-4.25 5a.75.75 0 01-1.14 0l-4.25-5a.75.75 0 01.02-1.06z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              {dropdownOpen && (
+                <ul className="mt-2 w-full bg-gray-700 rounded-md shadow-lg">
+                  <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
+                    <Link
+                      className="block px-4 py-2"
+                      href="/profile"
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li className="block px-4 py-2 hover:bg-gray-600 rounded-md">
+                    <button
+                      className="block px-4 py-2"
+                      onClick={() => {
+                        handleLogout();
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 }
+
+export default Navbar;

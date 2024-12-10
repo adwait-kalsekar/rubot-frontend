@@ -15,6 +15,7 @@ export type User = {
   fullName: string;
   username: string;
   email: string;
+  role: string;
 };
 
 type UserFromServer = {
@@ -22,6 +23,7 @@ type UserFromServer = {
   fullName: string;
   username: string;
   email: string;
+  role: string;
 };
 
 export type LoginResponse = {

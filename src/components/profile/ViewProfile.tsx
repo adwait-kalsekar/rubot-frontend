@@ -21,7 +21,7 @@ function ViewProfile() {
     canvasApiKey: 'test_key_for_canvas',
   });
 
-  const [showCanvasApiKey, setShowCanvasApiKey] = useState<Boolean>(false);
+  const [showCanvasApiKey, setShowCanvasApiKey] = useState<boolean>(false);
 
   const profileQuery = useQuery({
     queryKey: ['profile'],
@@ -34,7 +34,7 @@ function ViewProfile() {
     },
   });
 
-  const { data: profile, isError, isLoading } = profileQuery;
+  const { data: profile } = profileQuery;
 
   const [editing, setEditing] = useState<'profile' | 'password' | 'none'>(
     'none'

@@ -1,17 +1,6 @@
 'use client';
 
-import Image from 'next/image';
-import { useState } from 'react';
-
-import defaultUserIcon from '../../../public/assets/default-user-icon.png';
-import { EditPasswordForm, EditProfileForm } from '@/components';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from '@tanstack/react-query';
-import axios from 'axios';
-import { Profile } from '@/types/profile';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ViewProfile from '@/components/profile/ViewProfile';
 
 const queryClient = new QueryClient();

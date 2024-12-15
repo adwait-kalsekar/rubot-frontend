@@ -13,6 +13,7 @@ function MessagePage() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [messageError, setMessageError] = useState<boolean>(false);
+  const [generatingResponse, setGeneratingResponse] = useState<boolean>(false);
 
   const messageQuery = useQuery({
     queryKey: ['conversation', conversationId],
@@ -38,13 +39,14 @@ function MessagePage() {
   return (
     <div className="w-4/5 flex flex-col md:h-[83vh] lg:h-[86vh]">
       {conversationId === 'new' ? (
-        <NewConversation />
+        <NewConversation generatingResponse={generatingResponse} />
       ) : (
         <Conversation
           messages={messages}
           isLoading={isLoading}
           messagesLoadingError={isError}
           messageMutationError={messageError}
+          generatingResponse={generatingResponse}
         />
       )}
       <ChatInput
@@ -53,6 +55,7 @@ function MessagePage() {
         messagesLoadingError={isError}
         messageMutationError={messageError}
         setMessageError={setMessageError}
+        setGeneratingResponse={setGeneratingResponse}
       />
     </div>
   );

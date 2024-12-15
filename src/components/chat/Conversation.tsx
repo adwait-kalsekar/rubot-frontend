@@ -9,11 +9,13 @@ interface ConversationProps {
   isLoading: boolean;
   messagesLoadingError: boolean;
   messageMutationError: boolean;
+  generatingResponse: boolean;
 }
 
 export default function Conversation({
   messages,
   messageMutationError,
+  generatingResponse,
 }: ConversationProps) {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -43,6 +45,11 @@ export default function Conversation({
           <span className="text-red-600">
             Could not send message! Please try again
           </span>
+        </div>
+      )}
+      {generatingResponse && (
+        <div className="mb-4 text-left animate-pulse bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
+          RUbot is thinking...
         </div>
       )}
       <div ref={bottomRef}></div>

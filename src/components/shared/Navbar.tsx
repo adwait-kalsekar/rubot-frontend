@@ -72,7 +72,7 @@ export default function Navbar() {
               </li>
             ) : (
               <li>
-                <Link href="/signup">Signup</Link>
+                <Link href="/login">Login</Link>
               </li>
             )}
           </ul>
@@ -142,8 +142,8 @@ export default function Navbar() {
               </li>
             ) : (
               <li>
-                <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-                  Signup
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                  Login
                 </Link>
               </li>
             )}

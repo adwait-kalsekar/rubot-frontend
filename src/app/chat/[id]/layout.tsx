@@ -29,7 +29,6 @@ function ConversationLayout({ children }: { children: React.ReactNode }) {
     }
   }, [isLoggedIn]);
 
-  // If auth state is still loading (null), show nothing (or a loader)
   if (isLoggedIn === null) {
     return null;
   }

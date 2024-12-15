@@ -13,6 +13,7 @@ interface ChatInputProps {
   messagesLoadingError: boolean;
   messageMutationError: boolean;
   setMessageError: Dispatch<SetStateAction<boolean>>;
+  setGeneratingResponse: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ChatInput({
@@ -20,6 +21,7 @@ export default function ChatInput({
   isLoading,
   messagesLoadingError,
   setMessageError,
+  setGeneratingResponse,
 }: ChatInputProps) {
   const params = useParams();
   const conversationId = params.id as string;
@@ -34,7 +36,6 @@ export default function ChatInput({
     mutationFn: async ({ prompt }: { prompt: string }) => {
       const response = await axios.post(
         `/api/chat/conversations/${conversationId}`,
-
         {
           prompt,
         }
@@ -48,9 +49,11 @@ export default function ChatInput({
         queryKey: ['conversation', conversationId],
       });
       setMessageError(false);
+      setGeneratingResponse(false);
       router.push(`/chat/${messageResponse.conversationId}`);
     },
     onError: () => {
+      setGeneratingResponse(false);
       setMessageError(true);
     },
   });
@@ -66,6 +69,8 @@ export default function ChatInput({
       ];
       return newMessages;
     });
+
+    setGeneratingResponse(true);
 
     messageMutation.mutate({
       prompt,
@@ -103,13 +108,16 @@ export default function ChatInput({
             disabled={isLoading || messageMutation.isPending ? true : false}
             value={message}
             onChange={handlePromptChange}
-            onKeyDown={(e) =>
-              message.trim() !== '' &&
-              e.key === 'Enter' &&
-              e.ctrlKey &&
-              handleSend()
-            }
-            rows={1} // Sets initial height when not expanded
+            onKeyDown={(e) => {
+              if (message.trim() === '' || e.key !== 'Enter') return;
+
+              const isMac = /Mac/i.test(navigator.platform);
+
+              if ((isMac && e.metaKey) || (!isMac && e.ctrlKey)) {
+                handleSend();
+              }
+            }}
+            rows={1}
           />
           <button
             onClick={handleSend}

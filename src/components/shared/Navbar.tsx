@@ -32,7 +32,7 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/" className="flex items-center flex-row">
             <h1 className="text-4xl font-bold font-sans">
-              <span className="text-red-600">RU</span>bot
+              <span className="text-red-600 mr-6">RU</span>bot
             </h1>
           </Link>
         </div>

@@ -1,4 +1,4 @@
-import { Profile } from '@/types/profile';
+import { User } from '@/types/auth';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
@@ -28,13 +28,13 @@ function ViewProfile() {
     queryFn: async () => {
       const response = await axios.get('/api/profile');
 
-      const profile: Profile = response.data;
+      const user: User = response.data;
 
-      return profile;
+      return user;
     },
   });
 
-  const { data: profile } = profileQuery;
+  const { data: userProfile } = profileQuery;
 
   const [editing, setEditing] = useState<'profile' | 'password' | 'none'>(
     'none'
@@ -47,13 +47,22 @@ function ViewProfile() {
           {/* Avatar and possibly file input if editing profile */}
           <div className="mb-8 md:mb-0 md:mr-16 flex flex-col items-center md:items-start">
             <Image
-              src={profile?.avatar ? profile.avatar : defaultUserIcon}
+              src={
+                userProfile?.profile?.avatar
+                  ? userProfile?.profile.avatar
+                  : defaultUserIcon
+              }
               height={150}
               width={150}
               alt="User Avatar"
               className="mb-4"
             />
             {editing === 'profile' && <input type="file" className="mt-2" />}
+            <div className="mb-4">
+              <span className="text-base text-gray-500">Credits Left</span>
+              <br />
+              <span className="text-xl">{userProfile?.profile?.credits}</span>
+            </div>
           </div>
 
           {editing === 'password' ? (
@@ -69,20 +78,27 @@ function ViewProfile() {
               <div className="profile mb-8 md:mb-0">
                 <div className="mb-8">
                   <span className="text-3xl md:text-4xl font-semibold">
-                    {profile?.user.fullName}
+                    {userProfile?.fullName}
                   </span>
                 </div>
                 <div className="mb-4">
                   <span className="text-base text-gray-500">Username</span>
                   <br />
-                  <span className="text-xl">{profile?.user.username}</span>
+                  <span className="text-xl">{userProfile?.username}</span>
                 </div>
                 <div className="mb-4">
                   <span className="text-base text-gray-500">Email</span>
                   <br />
-                  <span className="text-xl">{profile?.user.email}</span>
+                  <span className="text-xl">{userProfile?.email}</span>
                 </div>
-                {profile?.isStudent && (
+                <div className="mb-4">
+                  <span className="text-base text-gray-500">Student</span>
+                  <br />
+                  <span className="text-xl">
+                    {userProfile?.profile?.isStudent ? 'True' : 'False'}
+                  </span>
+                </div>
+                {userProfile?.profile?.isStudent && (
                   <div className="mb-4">
                     <span className="text-base text-gray-500">
                       Canvas API Key
@@ -93,7 +109,7 @@ function ViewProfile() {
                         className="text-l cursor-pointer break-all"
                         onClick={() => setShowCanvasApiKey(!showCanvasApiKey)}
                       >
-                        {profile.canvasApiKey}
+                        {userProfile?.profile.canvasApiKey}
                       </span>
                     ) : (
                       <span

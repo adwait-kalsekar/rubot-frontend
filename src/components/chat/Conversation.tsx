@@ -49,7 +49,8 @@ export default function Conversation({
       )}
       {generatingResponse && (
         <div className="mb-4 text-left animate-pulse bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
-          RUbot is thinking...
+          RUbot is thinking! Our AI agents are working to assist you with your
+          queries....
         </div>
       )}
       <div ref={bottomRef}></div>

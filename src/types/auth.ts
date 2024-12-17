@@ -1,3 +1,5 @@
+import { Profile } from './profile';
+
 export type LoginUser = {
   usernameOrEmail: string;
   password: string;
@@ -16,6 +18,7 @@ export type User = {
   username: string;
   email: string;
   role: string;
+  profile: Profile;
 };
 
 type UserFromServer = {

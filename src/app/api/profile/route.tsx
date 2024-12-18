@@ -3,7 +3,6 @@ import { NextResponse, NextRequest } from 'next/server';
 import { BACKEND_AUTH_URL } from '@/lib/constants';
 import { createApiClient } from '@/lib/apiClient';
 import { Profile } from '@/types/profile';
-import { User } from '@/types/auth';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function GET(request: NextRequest) {
@@ -36,6 +35,9 @@ export async function POST(request: NextRequest) {
     `${BACKEND_AUTH_URL}/profile`,
     userProfile
   );
+
+  console.log(response.data);
+
   return NextResponse.json(
     {
       message: 'Profile Updated Successfully',

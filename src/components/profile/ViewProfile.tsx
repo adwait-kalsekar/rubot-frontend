@@ -9,18 +9,6 @@ import EditProfileForm from './EditProfileForm';
 import defaultUserIcon from '../../../public/assets/default-user-icon.png';
 
 function ViewProfile() {
-  // Placeholder user data
-  // const [user, setUser] = useState({
-  //   email: 'user@example.com',
-  //   username: 'user123',
-  //   fullName: 'John Doe',
-  //   avatar: '',
-  //   password: '',
-  //   confirmPassword: '',
-  //   isStudent: true,
-  //   canvasApiKey: 'test_key_for_canvas',
-  // });
-
   const [showCanvasApiKey, setShowCanvasApiKey] = useState<boolean>(false);
 
   const profileQuery = useQuery({

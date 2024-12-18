@@ -1,6 +1,5 @@
 'use client';
 
-import { BACKEND_AUTH_URL } from '@/lib/constants';
 import { User } from '@/types/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';

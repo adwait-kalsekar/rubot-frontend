@@ -4,8 +4,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useAuth } from '@/provider/authProvider';
 import axios from 'axios';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+import './shared.css';
 
 const LOGOUT_URL = '/api/auth/logout';
 
@@ -13,6 +16,7 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const auth = useAuth();
   const isLoggedIn = auth?.isAuthenticated;
@@ -61,18 +65,35 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-6 text-xl">
           <ul className="flex space-x-6">
             <li>
-              <Link href="/">Home</Link>
+              <Link href="/" className={pathname === '/' ? 'activeLink' : ''}>
+                Home
+              </Link>
             </li>
             <li>
-              <Link href="/about">About</Link>
+              <Link
+                href="/about"
+                className={pathname === '/about' ? 'activeLink' : ''}
+              >
+                About
+              </Link>
             </li>
             {isLoggedIn ? (
               <li>
-                <Link href="/chat">Chat</Link>
+                <Link
+                  href="/chat"
+                  className={pathname.includes('/chat') ? 'activeLink' : ''}
+                >
+                  Chat
+                </Link>
               </li>
             ) : (
               <li>
-                <Link href="/login">Login</Link>
+                <Link
+                  href="/login"
+                  className={pathname === '/login' ? 'activeLink' : ''}
+                >
+                  Login
+                </Link>
               </li>
             )}
           </ul>
@@ -83,7 +104,9 @@ export default function Navbar() {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center focus:outline-none"
               >
-                <span>Account</span>
+                <span className={pathname === '/profile' ? 'activeLink' : ''}>
+                  Account
+                </span>
                 <svg
                   className="w-4 h-4 ml-1"
                   fill="currentColor"

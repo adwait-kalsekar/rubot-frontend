@@ -14,7 +14,7 @@ function NewConversation({
     <div className="flex-1 overflow-y-auto bg-gray-950 text-white px-4 py-12">
       {generatingResponse ? (
         <div className="mb-4 text-left animate-pulse bg-gradient-to-r from-gray-400 to-gray-600 bg-clip-text text-transparent">
-          RUbot is thinking! Our AI agents are working to assist you with your
+          RUbot is thinking! Our AI a are working to assist you with your
           queries....
         </div>
       ) : (

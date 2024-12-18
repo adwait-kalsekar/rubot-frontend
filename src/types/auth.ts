@@ -17,7 +17,7 @@ export type User = {
   fullName: string;
   username: string;
   email: string;
-  role: string;
+  role?: string;
   profile: Profile;
 };
 

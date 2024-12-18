@@ -1,6 +1,6 @@
 'use server';
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { NextResponse, NextRequest } from 'next/server';
 
 import {
@@ -43,30 +43,50 @@ export async function POST(request: NextRequest) {
 
   const requestData = await request.json();
 
-  const response = await axios.post(BACKEND_LOGIN_URL, requestData);
+  try {
+    const response = await axios.post(BACKEND_LOGIN_URL, requestData);
+    console.log(response.data);
+    if (response.status === 200) {
+      console.log('logged in');
+      const data: LoginResponse = response.data.data;
+      const { accessToken, refreshToken } = data;
 
-  console.log(response.data);
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
 
-  if (response.status === 200) {
-    console.log('logged in');
-    const data: LoginResponse = response.data.data;
-    const { accessToken, refreshToken } = data;
-
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
-
-    return NextResponse.json(
-      {
-        loggedIn: true,
-      },
-      { status: 200 }
-    );
+      return NextResponse.json(
+        {
+          loggedIn: true,
+        },
+        { status: 200 }
+      );
+    }
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.status === 401) {
+        return NextResponse.json(
+          {
+            loggedIn: false,
+          },
+          { status: 401 }
+        );
+      } else {
+        return NextResponse.json(
+          {
+            loggedIn: false,
+          },
+          { status: 500 }
+        );
+      }
+    }
   }
 
-  return NextResponse.json(
-    {
-      loggedIn: false,
-    },
-    { status: 400 }
-  );
+  // if (response.status === 500) {
+  //   return NextResponse.json(
+  //     {
+  //       loggedIn: false,
+  //     },
+  //     { status: 500 }
+  //   );
+  // }
 }

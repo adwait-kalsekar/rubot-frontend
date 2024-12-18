@@ -1,6 +1,6 @@
 'use client';
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -28,11 +28,25 @@ export default function SignupForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const response = await axios.post(SIGNUP_URL, form);
+    if (form.password !== form.confirmPassword) {
+      return alert('Passwords do not match');
+    }
 
-    if (response.status === 201) {
-      auth?.login();
-      router.replace('/login');
+    try {
+      const response = await axios.post(SIGNUP_URL, form);
+
+      if (response.status === 201) {
+        auth?.login();
+        router.replace('/login');
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.status === 409) {
+          return alert('User with email or username already exists');
+        } else {
+          return alert('Something went wrong');
+        }
+      }
     }
   }
 

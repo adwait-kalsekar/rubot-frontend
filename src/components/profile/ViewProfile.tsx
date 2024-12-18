@@ -10,16 +10,16 @@ import defaultUserIcon from '../../../public/assets/default-user-icon.png';
 
 function ViewProfile() {
   // Placeholder user data
-  const [user, setUser] = useState({
-    email: 'user@example.com',
-    username: 'user123',
-    fullName: 'John Doe',
-    avatar: '',
-    password: '',
-    confirmPassword: '',
-    isStudent: true,
-    canvasApiKey: 'test_key_for_canvas',
-  });
+  // const [user, setUser] = useState({
+  //   email: 'user@example.com',
+  //   username: 'user123',
+  //   fullName: 'John Doe',
+  //   avatar: '',
+  //   password: '',
+  //   confirmPassword: '',
+  //   isStudent: true,
+  //   canvasApiKey: 'test_key_for_canvas',
+  // });
 
   const [showCanvasApiKey, setShowCanvasApiKey] = useState<boolean>(false);
 
@@ -58,11 +58,13 @@ function ViewProfile() {
               className="mb-4"
             />
             {editing === 'profile' && <input type="file" className="mt-2" />}
-            <div className="mb-4">
-              <span className="text-base text-gray-500">Credits Left</span>
-              <br />
-              <span className="text-xl">{userProfile?.profile?.credits}</span>
-            </div>
+            {editing === 'none' && (
+              <div className="mb-4">
+                <span className="text-base text-gray-500">Credits Left</span>
+                <br />
+                <span className="text-xl">{userProfile?.profile?.credits}</span>
+              </div>
+            )}
           </div>
 
           {editing === 'password' ? (
@@ -70,8 +72,7 @@ function ViewProfile() {
           ) : editing === 'profile' ? (
             <EditProfileForm
               setEditing={setEditing}
-              user={user}
-              setUser={setUser}
+              userProfile={userProfile}
             />
           ) : (
             <div className="w-full flex flex-col md:flex-row justify-between items-start mt-4 md:mt-0">

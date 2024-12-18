@@ -1,48 +1,63 @@
 'use client';
 
-import { Dispatch, FormEvent, SetStateAction } from 'react';
+import { BACKEND_AUTH_URL } from '@/lib/constants';
+import { User } from '@/types/auth';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
+
+const PROFILE_URL = `/api/profile`;
 
 interface EditProfileForm {
   setEditing: Dispatch<SetStateAction<'password' | 'profile' | 'none'>>;
-  user: {
-    email: string;
-    username: string;
-    fullName: string;
-    avatar: string;
-    password: string;
-    confirmPassword: string;
-    isStudent: boolean;
-    canvasApiKey: string;
-  };
-  setUser: Dispatch<
-    SetStateAction<{
-      email: string;
-      username: string;
-      fullName: string;
-      avatar: string;
-      password: string;
-      confirmPassword: string;
-      isStudent: boolean;
-      canvasApiKey: string;
-    }>
-  >;
+  userProfile: User | undefined;
 }
 
-function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
+function EditProfileForm({ setEditing, userProfile }: EditProfileForm) {
+  const [user, setUser] = useState({
+    email: userProfile?.email,
+    username: userProfile?.username,
+    fullName: userProfile?.fullName,
+    avatar: userProfile?.profile.avatar,
+    canvasApiKey: userProfile?.profile.canvasApiKey,
+  });
+
+  const [isStudent, setIsStudent] = useState<boolean>(
+    userProfile?.profile.isStudent || false
+  );
+
+  const queryClient = useQueryClient();
+
+  const profileMutation = useMutation({
+    mutationFn: async () => {
+      try {
+        const response = await axios.post(PROFILE_URL, { ...user, isStudent });
+        if (response.status === 200) {
+          return alert('Profile Updated successfully');
+        }
+      } catch (err) {
+        return alert('Error');
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['profile'],
+      });
+      setEditing('none');
+    },
+    onError: () => {
+      return alert('Error Updating Profile');
+    },
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle profile update
-    if (user.password && user.password != user.confirmPassword) {
-      return alert('Passwords not same');
-    }
 
-    alert('Profile saved');
-
-    setEditing('none');
+    profileMutation.mutate();
   };
 
   return (
@@ -53,7 +68,7 @@ function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
       <div className="mb-4">
         <label>Full Name</label>
         <input
-          name="firstName"
+          name="fullName"
           value={user.fullName}
           onChange={handleChange}
           className="w-full p-2 bg-gray-700 text-white"
@@ -82,18 +97,33 @@ function EditProfileForm({ setEditing, user, setUser }: EditProfileForm) {
           required
         />
       </div>
+      <div className="mb-4">
+        <label
+          htmlFor="isStudent"
+          className="flex items-center space-x-2 cursor-pointer"
+        >
+          <span className="text-white font-medium">Is Student?</span>
+          <input
+            id="isStudent"
+            name="isStudent"
+            type="checkbox"
+            checked={isStudent}
+            onChange={() => setIsStudent(!isStudent)}
+            className="h-4 w-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-offset-gray-800 focus:ring-2"
+          />
+        </label>
+      </div>
 
-      {user.isStudent && (
+      {isStudent && (
         <>
           <div className="mb-4">
             <label>Canvas API Key</label>
             <input
-              name="email"
-              value={user.canvasApiKey}
+              name="canvasApiKey"
+              value={user.canvasApiKey || ''}
               onChange={handleChange}
               className="w-full p-2 bg-gray-700 text-white"
               type="text"
-              required
             />
           </div>
         </>

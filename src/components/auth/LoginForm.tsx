@@ -1,6 +1,6 @@
 'use client';
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -24,11 +24,21 @@ export default function LoginForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const response = await axios.post(LOGIN_URL, form);
+    try {
+      const response = await axios.post(LOGIN_URL, form);
 
-    if (response.status === 200) {
-      auth?.login();
-      router.replace('/chat');
+      if (response.status === 200) {
+        auth?.login();
+        router.replace('/chat');
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.status === 401) {
+          return alert('Login Error! Please Check Credentials');
+        } else {
+          return alert('Login Error! Something Went Wrong');
+        }
+      }
     }
   }
 
